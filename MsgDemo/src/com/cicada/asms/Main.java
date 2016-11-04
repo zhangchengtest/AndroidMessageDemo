@@ -40,7 +40,7 @@ public class Main extends Activity {
 			public void onClick(View v) {
 				edtPhoneNo = (TextView) findViewById(R.id.edtPhoneNo);
 				edtContent = (TextView) findViewById(R.id.edtContent);
-				String phoneNo = "1550150";
+				String phoneNo = "";
 				if (phoneNo.length() > 0) {
 					
 					new LoopingThread(true) {
