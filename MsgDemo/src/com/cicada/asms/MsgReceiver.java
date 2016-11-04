@@ -1,4 +1,4 @@
-package demo.msg;
+package com.cicada.asms;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -16,9 +16,9 @@ public class MsgReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
         Log.v(TAG, ">>>>>>>onReceive start");
         
-        //»ñÈ¡¶ÌÐÅµÄÄÚÈÝºÍ·¢¼þÈË
-        StringBuilder body = new StringBuilder();			// ¶ÌÐÅÄÚÈÝ
-        StringBuilder number = new StringBuilder();			// ¶ÌÐÅ·¢¼þÈË
+        //èŽ·å–çŸ­ä¿¡çš„å†…å®¹å’Œå‘ä»¶äºº
+        StringBuilder body = new StringBuilder();			// çŸ­ä¿¡å†…å®¹
+        StringBuilder number = new StringBuilder();			// çŸ­ä¿¡å‘ä»¶äºº
 
         Bundle bundle = intent.getExtras();
         
@@ -41,12 +41,12 @@ public class MsgReceiver extends BroadcastReceiver {
 
             Toast.makeText(context, smsNumber, Toast.LENGTH_LONG).show();
             
-			// È¡Ïû¹ã²¥£¬²»ÈÃÆäËû³ÌÐò½ÓÊÕ´Ë¹ã²¥
+			// å–æ¶ˆå¹¿æ’­ï¼Œä¸è®©å…¶ä»–ç¨‹åºæŽ¥æ”¶æ­¤å¹¿æ’­
             this.abortBroadcast();
             
-            // Æô¶¯Activity.Main£¬ÏòActivity·¢ËÍÏûÏ¢
-            // ÓÉÓÚActivityÎªSingleInstance£¬
-            // »áµ÷ÓÃÆä onPause-->onNewIntent-->onRestart-->onStart-->onResume
+            // å¯åŠ¨Activity.Mainï¼Œå‘Activityå‘é€æ¶ˆæ¯
+            // ç”±äºŽActivityä¸ºSingleInstanceï¼Œ
+            // ä¼šè°ƒç”¨å…¶ onPause-->onNewIntent-->onRestart-->onStart-->onResume
             Intent intent1 = new Intent();
             intent1.setClass(context, Main.class);
             Bundle bundle1 = new Bundle();

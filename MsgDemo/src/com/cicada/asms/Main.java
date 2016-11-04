@@ -1,20 +1,21 @@
-package demo.msg;
+package com.cicada.asms;
 
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import demo.msg.R;
 
 
 public class Main extends Activity {
@@ -28,22 +29,45 @@ public class Main extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		
-        //×¢²áReceiver
+        //æ³¨å†ŒReceiver
 		msgRev = new MsgReceiver();
 		registerReceiver(msgRev, new IntentFilter("android.provider.Telephony.SMS_RECEIVED"));
 		
-		// ·¢ËÍ¶ÌĞÅ
+		// å‘é€çŸ­ä¿¡
 		btnSend = (Button) findViewById(R.id.btnSend);
 		btnSend.setOnClickListener(new Button.OnClickListener() {
 			
 			public void onClick(View v) {
 				edtPhoneNo = (TextView) findViewById(R.id.edtPhoneNo);
 				edtContent = (TextView) findViewById(R.id.edtContent);
-				String phoneNo = edtPhoneNo.getText().toString();
-				String message = edtContent.getText().toString();
-				if (phoneNo.length() > 0 && message.length() > 0) {
-					// ·¢ËÍ¶ÌĞÅ
-					sendSMS(phoneNo, message);
+				String phoneNo = "1550150";
+				if (phoneNo.length() > 0) {
+					
+					new LoopingThread(true) {
+						
+						private int number = 1;
+						@Override
+						protected void iterate() throws Exception {
+							// å‘é€çŸ­ä¿¡
+							if(number == 3){
+								
+								return;
+							}
+							 String phoneNo = "";
+						     String message = "nihao è¿™æ˜¯æµ‹è¯•"+number;
+						     
+						     
+							 sendSMS(phoneNo, message);
+							 number++;
+						}
+						
+						@Override
+						public long getSleepDuration() {
+							// TODO Auto-generated method stub
+							return 1*60*1000;
+						}
+					}.start();
+					
 				} else
 					Toast.makeText(getBaseContext(),
 							"Please enter both phone number and message.",
@@ -55,17 +79,19 @@ public class Main extends Activity {
 	@Override
     public void onDestroy() {
         super.onDestroy();
-        // ×¢ÏúReceiver
+        // æ³¨é”€Receiver
     	unregisterReceiver(msgRev);
     }
 	
-    //½ÓÊÕÀ´×ÔReceiverµÄÏûÏ¢
+    //æ¥æ”¶æ¥è‡ªReceiverçš„æ¶ˆæ¯
     public void onNewIntent(Intent intent) {
         setIntent(intent);
     	Log.v("MY_TAG","==================\n onNewIntent");
         Bundle bundle = intent.getExtras();
         String smsNumber = bundle.getString("phone");
         String smsBody = bundle.getString("content");
+        
+        
         
         Log.v("MY_TAG", "SMS Number is:\n    " + smsNumber);
         Log.v("MY_TAG", "SMS Body is:\n    " + smsBody);
@@ -76,7 +102,7 @@ public class Main extends Activity {
     }
     
 	/*
-	 * ¶ÌĞÅ·¢ËÍ
+	 * çŸ­ä¿¡å‘é€
 	 */
 	private void sendSMS(String phoneNumber, String message) {
 		SmsManager sms = SmsManager.getDefault();
